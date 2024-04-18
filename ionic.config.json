@@ -1,0 +1,7 @@
+{
+  "name": "Kon3ctadosExtension",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
