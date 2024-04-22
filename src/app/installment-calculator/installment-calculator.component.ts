@@ -42,7 +42,7 @@ export default class InstallmentCalculatorComponent {
 
     changeTotal(event: IonInputCustomEvent<InputInputEventDetail>) {
         const value = parseFloat(`${event.detail.value}`);
-        const totalInstallment = value > 10000 ? 36 : value > 3000 ? 24 : value > 1000 ? 12 : 0;
+        const totalInstallment = value > 3000000 ? 36 : value > 1000000 ? 24 : value > 40000 ? 12 : 0;
         this.installmentList = [];
         for (let i = 0; i < totalInstallment; i++) {
             this.installmentList.push(i + 1);
