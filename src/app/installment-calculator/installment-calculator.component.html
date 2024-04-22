@@ -1,0 +1,101 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="setExecutive()" fill="outline">
+        <ion-icon name="person-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title style="font-size: 14px;">Calculadora de Cuotas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <h2>Calculadora de Cuotas</h2>
+    </ion-toolbar>
+  </ion-header>
+
+
+  
+  
+  
+  <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+  <ion-modal [keepContentsMounted]="true">
+    <ng-template>
+      <ion-datetime
+        id="datetime"
+        locale="es-VE"
+        presentation="date"
+        (ionChange)="onChangeDate($event)"></ion-datetime>
+    </ng-template>
+  </ion-modal>
+  
+  <ion-card [formGroup]="installmentForm">
+    <ion-card-content>
+      <ion-item>
+          <ion-input (ionInput)="changeTotal($event)" formControlName="total" label="Monto Total" labelPlacement="floating" type="number"></ion-input>
+      </ion-item>
+  
+      <ion-item [disabled]="!installmentList.length">
+          <ion-select formControlName="totalInstallment" label="Cuotas" interface="popover">
+            @for (value of installmentList; track value) {
+              <ion-select-option [value]="value">{{ value }}</ion-select-option>
+            }
+          </ion-select>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-input formControlName="client" label="Nombre Del Cliente" labelPlacement="floating"></ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+
+  @if (installments.length) {
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>Cheques</ion-card-subtitle>
+      </ion-card-header>
+
+      @for (installment of installments; track installment.index) {
+        <ion-item (click)="clickInstallment(installment)" button detail="false">
+          <ion-label>
+            <ion-badge>N<small>ro</small> {{ installment.index }}</ion-badge>
+            <p>{{ installment.date | date: 'dd-MM-yyyy'}}</p>
+          </ion-label>
+
+          <ion-label slot="end">
+            <h2>{{ installment.fixedAmount || installment.amount | number: '0.2-2' }}</h2>
+          </ion-label>
+        </ion-item>
+      }
+    </ion-card>
+  }
+
+
+  <div class="ion-padding"></div>
+</ion-content>
+
+
+@if (installments.length) {
+  <ion-footer class="ion-text-right">
+    <ion-toolbar>
+      <ion-buttons slot="end">
+        <ion-button (click)="clickedReset()" size="small" fill="outline">
+          BORRAR
+        </ion-button>
+        <ion-button (click)="downloadPDF()" color="danger" size="small" fill="outline">
+          PDF
+          <ion-icon name="download-outline" slot="end"></ion-icon>
+        </ion-button>
+        <ion-button (click)="downloadEXCEL()" color="success" size="small" fill="outline">
+          EXCEL
+          <ion-icon name="download-outline" slot="end"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
+}

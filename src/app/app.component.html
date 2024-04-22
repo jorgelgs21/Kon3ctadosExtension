@@ -1,3 +1,20 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  @if (executive) {
+    <ion-router-outlet></ion-router-outlet>
+  }
+  @else {
+    <ion-content>
+      <ion-title>
+        @if (processing) {
+          <ion-button size="small">
+            Procesando
+            <ion-spinner slot="end"></ion-spinner>
+          </ion-button>
+        }
+        @else {
+          <ion-button size="small" (click)="setExecutive()">Iniciar</ion-button>
+        }
+      </ion-title>
+    </ion-content>
+  }
 </ion-app>
