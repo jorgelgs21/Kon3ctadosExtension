@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Kon3ctadosExt",
-    "version": "1.0",
+    "version": "1.01",
     "icons": {
         "48": "assets/icon/favicon.png"
     },
@@ -12,5 +12,10 @@
             "32": "assets/icon/favicon.png"
         },
         "default_title": "Calculadora de Cuotas"
+    },
+    "browser_specific_settings": {
+        "gecko": {
+          "update_url": "https://example.com/updates.json"
+        }
     }
 }
