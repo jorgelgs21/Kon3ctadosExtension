@@ -15,7 +15,7 @@
     },
     "browser_specific_settings": {
         "gecko": {
-          "update_url": "https://example.com/updates.json"
+          "update_url": "https://github.com/jorgelgs21/Kon3ctadosExtension/blob/master/ArchivoExt/manifest.json"
         }
     }
 }
