@@ -1,11 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { TDocumentDefinitions, Content, UnorderedListElement, Column } from 'pdfmake/interfaces';
 import * as pdfMake from "pdfmake/build/pdfmake";
-import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-import { IInstallment } from '../interfaces/installment.interface';
-import { DatePipe, DecimalPipe, TitleCasePipe } from '@angular/common';
+import { IInstallment, IInstallmentCalculator } from '../interfaces/installment.interface';
+import { DatePipe, DecimalPipe, TitleCasePipe, UpperCasePipe } from '@angular/common';
 import { ConfigService } from './config.service';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
+
 
 
 @Injectable({
@@ -21,9 +22,11 @@ export class InstallmentPDFMakeService {
     }
 
 
-    async openPDF(installments: IInstallment[], total: number, clientName: string) {
+    async openPDF(installments: IInstallment[], data: IInstallmentCalculator) {
         try {
             const titlePipe = new TitleCasePipe();
+            const upperPipe = new UpperCasePipe();
+
             const content: Content = [
                 {
                     bold: true,
@@ -48,11 +51,14 @@ export class InstallmentPDFMakeService {
                     italics: true,
                 },
                 {
-                    text: `Cliente: ${titlePipe.transform(clientName)}`,
+                    text: `
+                    Cliente: ${titlePipe.transform(data.clientName)}
+                    ${data.RUT ? '\nRUT: '+ upperPipe.transform(data.RUT) : ''}
+                    ${data.address ? '\nDirección: '+ titlePipe.transform(data.address) : ''}
+                    \n`,
                     fontSize: 12,
                     bold: true,
                     marginLeft: 30,
-                    marginBottom: 10,
                     italics: true,
                 },
                 {
@@ -61,15 +67,20 @@ export class InstallmentPDFMakeService {
                     alignment: 'center',
                 },
                 {
-                    ul: this._installentFiles(installments, total),
+                    ul: this._installentFiles(installments, data.total),
                     italics: true,
-                    lineHeight: installments.length > 20 ? 1.2 : 1.6,
+                    lineHeight: installments.length > 20 ? 1.4 : 1.8,
                     margin: [40, 10, 40, 10],
                 },
             ];
 
             const docDefinition: TDocumentDefinitions = {
                 content,
+                pageSize: installments.length > 20 ? 'LEGAL' : 'A4',
+                footer: {
+                    text: 'NOTA: Cada cheque debe ir: tachado a la orden del portador, cruzado, nominativo y endosado. \nA nombre de Soc. Consecionaria Autopista Central S.A',
+                    alignment: 'center'
+                },
                 pageMargins: [20, 20, 20, 30],
             };
             pdfMake.createPdf(docDefinition).open();
@@ -90,7 +101,6 @@ export class InstallmentPDFMakeService {
         const ul: UnorderedListElement[] = [{
             listType: 'none',
             bold: true,
-            marginTop: 40,
             columns: this._parseColumns(
                 'Cheque', 'Fecha', 'Monto'
             )

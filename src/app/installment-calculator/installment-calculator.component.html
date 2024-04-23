@@ -9,7 +9,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" [formGroup]="installmentForm">
   <ion-header collapse="condense">
     <ion-toolbar>
       <h2>Calculadora de Cuotas</h2>
@@ -26,16 +26,18 @@
     <ng-template>
       <ion-datetime
         id="datetime"
-        locale="es-VE"
         presentation="date"
+        formControlName="date"
         (ionChange)="onChangeDate($event)"></ion-datetime>
     </ng-template>
   </ion-modal>
   
-  <ion-card [formGroup]="installmentForm">
+  <ion-card>
     <ion-card-content>
       <ion-item>
-          <ion-input (ionInput)="changeTotal($event)" formControlName="total" label="Monto Total" labelPlacement="floating" type="number"></ion-input>
+          <ion-input (ionInput)="changeTotal($event)" formControlName="total" label="Monto Total" labelPlacement="floating"
+          [maskito]="amountMask"
+          [maskitoElement]="maskitoElement"></ion-input>
       </ion-item>
   
       <ion-item [disabled]="!installmentList.length">
@@ -48,9 +50,30 @@
 
 
       <ion-item>
-        <ion-input formControlName="client" label="Nombre Del Cliente" labelPlacement="floating"></ion-input>
+        <ion-input formControlName="clientName" label="Nombre Del Cliente" labelPlacement="floating"></ion-input>
       </ion-item>
+
+      <ion-item>
+        <ion-input formControlName="RUT" label="RUT" labelPlacement="floating"></ion-input>
+      </ion-item>
+
+      @if (requireAddress) {
+        <ion-item>
+          <ion-input formControlName="address" label="Direccion" labelPlacement="floating"></ion-input>
+        </ion-item>
+      }
     </ion-card-content>
+
+    @if (!requireAddress && installmentForm.valid) {
+    <ion-toolbar>
+      <ion-buttons slot="end">
+        <ion-button (click)="requireAddress = true">
+          <ion-icon name="add-outline" slot="start"></ion-icon>
+          Dirección
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    }
   </ion-card>
 
 
@@ -83,10 +106,14 @@
 @if (installments.length) {
   <ion-footer class="ion-text-right">
     <ion-toolbar>
-      <ion-buttons slot="end">
+
+      <ion-buttons slot="start">
         <ion-button (click)="clickedReset()" size="small" fill="outline">
-          BORRAR
+          NUEVO
         </ion-button>
+      </ion-buttons>
+      
+      <ion-buttons slot="end">
         <ion-button (click)="downloadPDF()" color="danger" size="small" fill="outline">
           PDF
           <ion-icon name="download-outline" slot="end"></ion-icon>

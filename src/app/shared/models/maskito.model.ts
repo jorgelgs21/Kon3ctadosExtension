@@ -19,6 +19,16 @@ export abstract class MaskitoModel {
         thousandSeparator: ""
     })
 
+
+    static amountMask = maskitoNumberOptionsGenerator({
+        min: 0,
+        thousandSeparator: ".",
+        decimalSeparator: ',',
+    })
+
+
+
+
     static yearMask(min: number = 2000, max?: number) {
         return maskitoNumberOptionsGenerator({
             min,

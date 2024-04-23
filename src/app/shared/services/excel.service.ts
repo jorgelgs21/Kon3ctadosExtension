@@ -2,7 +2,7 @@ import { Injectable, inject } from "@angular/core";
 import { Workbook, Worksheet } from "exceljs";
 import { saveAs } from "file-saver";
 import { AlertModel } from "../models/alert.model";
-import { IInstallment } from "../interfaces/installment.interface";
+import { IInstallment, IInstallmentCalculator } from "../interfaces/installment.interface";
 import { DatePipe, DecimalPipe, TitleCasePipe, UpperCasePipe } from "@angular/common";
 import { ConfigService } from "./config.service";
 
@@ -19,7 +19,7 @@ export class InstallmentExcelService {
     }
 
 
-    public async downloadInstallments(installments: IInstallment[], RUT: string, clientName: string) {
+    public async downloadInstallments(installments: IInstallment[], data: IInstallmentCalculator) {
         try {
             const titlePipe = new TitleCasePipe();
             const upperPipe = new UpperCasePipe();
@@ -40,16 +40,23 @@ export class InstallmentExcelService {
             ws.getCell(1, 2).value = `${titlePipe.transform(this._executive)}`;
 
             ws.getCell(2, 1).value = 'Cliente:';
-            ws.getCell(2, 2).value = `${titlePipe.transform(clientName)}`;
+            ws.getCell(2, 2).value = `${titlePipe.transform(data.clientName)}`;
 
-            ws.getCell(3, 1).value = 'RUT:';
-            ws.getCell(3, 2).value = `${upperPipe.transform(RUT)}`;
+            if (data.RUT) {
+                ws.getCell(3, 1).value = 'RUT:';
+                ws.getCell(3, 2).value = `${upperPipe.transform(data.RUT)}`;
+            }
+
+            if (data.address) {
+                ws.getCell(4, 1).value = 'Dirección:';
+                ws.getCell(4, 2).value = `${upperPipe.transform(data.address)}`;
+            }
 
             this._addTableInstallments(ws, installments);
 
             const buffer = await workbook.xlsx.writeBuffer();
             const blob = new Blob([buffer]);
-            saveAs(blob, `CUOTAS_${clientName.trim().split(' ').join('-')}.xlsx`);
+            saveAs(blob, `CUOTAS_${data.clientName.trim().split(' ').join('-')}.xlsx`);
 
             await AlertModel.success(`Cuotas Descargadas Correctamente!`)
         } catch (error) {
