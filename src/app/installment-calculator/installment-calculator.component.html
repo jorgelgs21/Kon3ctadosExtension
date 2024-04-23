@@ -103,8 +103,8 @@
 </ion-content>
 
 
-@if (installments.length) {
-  <ion-footer class="ion-text-right">
+<ion-footer class="ion-text-right">
+  @if (installments.length) {
     <ion-toolbar>
 
       <ion-buttons slot="start">
@@ -124,5 +124,12 @@
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
-  </ion-footer>
-}
+  }
+  @else {
+    <span style="font-weight: 600;">
+      <ion-text color="primary">KON</ion-text>
+      <ion-text color="danger">3</ion-text>
+      <ion-text color="primary">CTADOS</ion-text>
+    </span>
+  }
+</ion-footer>

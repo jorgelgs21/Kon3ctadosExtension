@@ -1,7 +1,7 @@
 import { Component, inject } from "@angular/core";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { IInstallment, IInstallmentCalculator, IInstallmentCalculatorForm } from "../shared/interfaces/installment.interface";
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonItem, IonInput, IonLabel, IonBadge, IonSelect, IonSelectOption, IonGrid, IonRow, IonCol, IonModal, IonDatetime, IonDatetimeButton, IonList, IonListHeader, IonCardHeader, IonCardSubtitle, IonFab, IonButton, IonFooter, IonButtons, IonIcon } from "@ionic/angular/standalone";
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonItem, IonInput, IonLabel, IonBadge, IonSelect, IonSelectOption, IonGrid, IonRow, IonCol, IonModal, IonDatetime, IonDatetimeButton, IonList, IonListHeader, IonCardHeader, IonCardSubtitle, IonFab, IonButton, IonFooter, IonButtons, IonIcon, IonText } from "@ionic/angular/standalone";
 import { DatePipe, DecimalPipe } from "@angular/common";
 import { IonInputCustomEvent, InputInputEventDetail, IonDatetimeCustomEvent, DatetimeChangeEventDetail } from "@ionic/core";
 import { AlertModel } from "../shared/models/alert.model";
@@ -17,7 +17,7 @@ import { CalculatorDataService } from "../shared/services/calculator-data.servic
 @Component({
     standalone: true,
     templateUrl: 'installment-calculator.component.html',
-    imports: [IonIcon, IonButtons, IonFooter, IonButton, IonFab, IonCardSubtitle, IonCardHeader, IonListHeader, IonList, IonDatetimeButton, IonDatetime, IonModal, IonCol, IonRow, IonGrid, IonBadge, IonSelect, IonSelectOption, IonLabel, IonInput, IonItem, IonCardContent, IonCard, IonContent, IonTitle, IonToolbar, IonHeader, ReactiveFormsModule, DatePipe, DecimalPipe, MaskitoDirective],
+    imports: [IonText, IonIcon, IonButtons, IonFooter, IonButton, IonFab, IonCardSubtitle, IonCardHeader, IonListHeader, IonList, IonDatetimeButton, IonDatetime, IonModal, IonCol, IonRow, IonGrid, IonBadge, IonSelect, IonSelectOption, IonLabel, IonInput, IonItem, IonCardContent, IonCard, IonContent, IonTitle, IonToolbar, IonHeader, ReactiveFormsModule, DatePipe, DecimalPipe, MaskitoDirective],
 })
 export default class InstallmentCalculatorComponent {
     public installmentForm!: FormGroup<IInstallmentCalculatorForm>;
@@ -150,7 +150,6 @@ export default class InstallmentCalculatorComponent {
     async setExecutive() {
         this._configService.setExecutive();
     }
-
 
 
 

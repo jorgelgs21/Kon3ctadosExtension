@@ -53,8 +53,8 @@ export class InstallmentPDFMakeService {
                 {
                     text: `
                     Cliente: ${titlePipe.transform(data.clientName)}
-                    ${data.RUT ? '\nRUT: '+ upperPipe.transform(data.RUT) : ''}
-                    ${data.address ? '\nDirección: '+ titlePipe.transform(data.address) : ''}
+                    ${data.RUT ? 'RUT: '+ upperPipe.transform(data.RUT) : ''}
+                    ${data.address ? 'Dirección: '+ titlePipe.transform(data.address) : ''}
                     \n`,
                     fontSize: 12,
                     bold: true,
@@ -78,7 +78,7 @@ export class InstallmentPDFMakeService {
                 content,
                 pageSize: installments.length > 20 ? 'LEGAL' : 'A4',
                 footer: {
-                    text: 'NOTA: Cada cheque debe ir: tachado a la orden del portador, cruzado, nominativo y endosado. \nA nombre de Soc. Consecionaria Autopista Central S.A',
+                    text: `NOTA: Cada cheque debe ir: tachado a la orden del portador, cruzado, nominativo y endosado. \nA nombre de Soc. Consecionaria Autopista Central S.A`,
                     alignment: 'center'
                 },
                 pageMargins: [20, 20, 20, 30],

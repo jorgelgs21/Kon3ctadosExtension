@@ -3,7 +3,7 @@ import { Workbook, Worksheet } from "exceljs";
 import { saveAs } from "file-saver";
 import { AlertModel } from "../models/alert.model";
 import { IInstallment, IInstallmentCalculator } from "../interfaces/installment.interface";
-import { DatePipe, DecimalPipe, TitleCasePipe, UpperCasePipe } from "@angular/common";
+import { DatePipe, TitleCasePipe, UpperCasePipe } from "@angular/common";
 import { ConfigService } from "./config.service";
 
 @Injectable({
@@ -32,9 +32,12 @@ export class InstallmentExcelService {
             const ws = workbook.addWorksheet('Cuotas');
 
             const A = ws.getColumn("A");
+            const B = ws.getColumn("B");
             A.width = 16;
-            A.alignment = { horizontal: 'right' };
+            B.width = 16;
             A.style = { font: { bold: true } };
+            A.alignment = { horizontal: 'right' };
+            B.alignment = { horizontal: 'left' };
 
             ws.getCell(1, 1).value = 'Ejecutivo:';
             ws.getCell(1, 2).value = `${titlePipe.transform(this._executive)}`;
@@ -78,21 +81,21 @@ export class InstallmentExcelService {
 
 
     private _addTableInstallments(ws: Worksheet, installments: IInstallment[]) {
-        const B = ws.getColumn("B");
         const C = ws.getColumn("C");
         const D = ws.getColumn("D");
-        B.width = 20;
+        const E = ws.getColumn("E");
         C.width = 20;
         D.width = 20;
-        B.alignment = { horizontal: 'center' };
+        E.width = 20;
         C.alignment = { horizontal: 'center' };
-        D.numFmt = '#,##0.00';
+        D.alignment = { horizontal: 'center' };
+        E.numFmt = '#,##0.00';
 
         const datePipe = new DatePipe('en-US');
 
         ws.addTable({
             name: 'CUOTAS',
-            ref: 'B5',
+            ref: 'C6',
             headerRow: true,
             totalsRow: true,
             columns: [
